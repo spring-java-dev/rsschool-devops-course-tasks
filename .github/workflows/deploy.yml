@@ -12,6 +12,9 @@ permissions:
 
 jobs:
     terraform-check:
+      permissions:
+          id-token: write  # Critical for OIDC
+          contents: read
       name: Terraform Format Check
       runs-on: ubuntu-latest
       steps:
@@ -51,6 +54,9 @@ jobs:
           run: terraform fmt -check -recursive
   
     terraform-plan:
+      permissions:
+        id-token: write  # Critical for OIDC
+        contents: read
       name: Terraform Plan
       runs-on: ubuntu-latest
       needs: terraform-check
@@ -76,6 +82,9 @@ jobs:
           run: terraform plan
   
     terraform-apply:
+      permissions:
+        id-token: write  # Critical for OIDC
+        contents: read
       name: Terraform Apply
       runs-on: ubuntu-latest
       needs: terraform-plan
