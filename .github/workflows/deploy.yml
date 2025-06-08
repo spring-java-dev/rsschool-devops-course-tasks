@@ -40,11 +40,11 @@ jobs:
           
               echo "Decoded payload:"
               echo "$TOKEN" | cut -d '.' -f2 | base64 -d | jq .
-            env:
+           env:
               ACTIONS_ID_TOKEN_REQUEST_URL: ${{ steps.get-token.outputs.id-token-request-url }}
               ACTIONS_ID_TOKEN_REQUEST_TOKEN: ${{ steps.get-token.outputs.id-token-request-token }}
-          
-            id: get-token
+
+           id: get-token
   
         - name: Setup Terraform
           uses: hashicorp/setup-terraform@v2
