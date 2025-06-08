@@ -6,6 +6,10 @@ on:
       branches:
         - main  # change to your default branch if different
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
     terraform-check:
       name: Terraform Format Check
