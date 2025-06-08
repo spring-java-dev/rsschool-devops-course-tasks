@@ -30,6 +30,21 @@ jobs:
             role-to-assume: arn:aws:iam::440423668970:role/GithubActionsRole
             aws-region: us-east-1
             audience: sts.amazonaws.com
+
+        - name: Print GitHub OIDC token `sub`
+          run: |
+              echo "Fetching OIDC token..."
+              TOKEN=$(curl -sH "Authorization: Bearer $ACTIONS_ID_TOKEN" \
+                "${ACTIONS_ID_TOKEN_REQUEST_URL}" \
+                | jq -r '.value')
+          
+              echo "Decoded payload:"
+              echo "$TOKEN" | cut -d '.' -f2 | base64 -d | jq .
+            env:
+              ACTIONS_ID_TOKEN_REQUEST_URL: ${{ steps.get-token.outputs.id-token-request-url }}
+              ACTIONS_ID_TOKEN_REQUEST_TOKEN: ${{ steps.get-token.outputs.id-token-request-token }}
+          
+            id: get-token
   
         - name: Setup Terraform
           uses: hashicorp/setup-terraform@v2
