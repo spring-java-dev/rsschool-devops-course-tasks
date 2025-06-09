@@ -1,3 +1,3 @@
 # rsschool-devops-course-tasks
 aws
-try to trigger actions, dummy commit 7
+try to trigger actions, dummy commit 8
