@@ -12,6 +12,9 @@ permissions:
 
 jobs:
     terraform-check:
+      concurrency:  # 
+        group: ${{ github.workflow }}-${{ github.ref }}
+        cancel-in-progress: true 
       permissions:
           id-token: write  # Critical for OIDC
           contents: read
@@ -20,11 +23,6 @@ jobs:
       steps:
         - name: Checkout repository
           uses: actions/checkout@v3
-
-        - name: Setup Terraform
-          uses: hashicorp/setup-terraform@v3
-          with:
-            terraform_version: 1.5.7 
 
         - name: Cache Terraform providers
           uses: actions/cache@v4
@@ -51,6 +49,9 @@ jobs:
           run: terraform fmt -check -recursive
   
     terraform-plan:
+      concurrency:  # 
+        group: ${{ github.workflow }}-${{ github.ref }}
+        cancel-in-progress: true 
       permissions:
         id-token: write  # Critical for OIDC
         contents: read
@@ -61,10 +62,8 @@ jobs:
         - name: Checkout repository
           uses: actions/checkout@v3
 
-        - name: Setup Terraform
-          uses: hashicorp/setup-terraform@v3
-          with:
-            terraform_version: 1.5.7 
+        - name: Terraform plan
+          run: terraform plan -lock-timeout=10m
 
         - name: Cache Terraform providers
           uses: actions/cache@v4
@@ -95,6 +94,9 @@ jobs:
           run: terraform plan
   
     terraform-apply:
+      concurrency:  # 
+        group: ${{ github.workflow }}-${{ github.ref }}
+        cancel-in-progress: true 
       permissions:
         id-token: write  # Critical for OIDC
         contents: read
@@ -105,11 +107,6 @@ jobs:
       steps:
         - name: Checkout repository
           uses: actions/checkout@v3
-
-        - name: Setup Terraform
-          uses: hashicorp/setup-terraform@v3
-          with:
-            terraform_version: 1.5.7 
 
         - name: Cache Terraform providers
           uses: actions/cache@v4
