@@ -72,6 +72,17 @@ jobs:
             aws-region: us-east-1
             audience: sts.amazonaws.com
 
+        - name: Cache Terraform providers
+          uses: actions/cache@v4
+          with:
+              path: |
+                ~/.terraform.d/plugin-cache
+                .terraform
+                .terraform.lock.hcl
+              key: ${{ runner.os }}-terraform-${{ hashFiles('**/*.tf') }}
+              restore-keys: |
+                ${{ runner.os }}-terraform-
+
         - name: Setup Terraform
           uses: hashicorp/setup-terraform@v3
 
@@ -79,18 +90,8 @@ jobs:
           run: terraform init
 
         - name: Terraform plan
-          run: terraform plan -lock-timeout=10m
+          run: terraform plan 
 
-        - name: Cache Terraform providers
-          uses: actions/cache@v4
-          with:
-            path: |
-              ~/.terraform.d/plugin-cache
-              .terraform
-              .terraform.lock.hcl
-            key: ${{ runner.os }}-terraform-${{ hashFiles('**/*.tf') }}
-            restore-keys: |
-              ${{ runner.os }}-terraform-
 
     terraform-apply:
       concurrency:  # 
@@ -124,7 +125,7 @@ jobs:
             key: ${{ runner.os }}-terraform-${{ hashFiles('**/*.tf') }}
             restore-keys: |
               ${{ runner.os }}-terraform-
-  
+
         - name: Setup Terraform
           uses: hashicorp/setup-terraform@v3
   
