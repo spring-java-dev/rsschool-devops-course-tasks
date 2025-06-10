@@ -24,6 +24,13 @@ jobs:
         - name: Checkout repository
           uses: actions/checkout@v3
 
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v4
+          with:
+            role-to-assume: arn:aws:iam::440423668970:role/GithubActionsRole
+            aws-region: us-east-1
+            audience: sts.amazonaws.com
+
         - name: Cache Terraform providers
           uses: actions/cache@v4
           with:
@@ -34,13 +41,6 @@ jobs:
             key: ${{ runner.os }}-terraform-${{ hashFiles('**/*.tf') }}
             restore-keys: |
               ${{ runner.os }}-terraform-
-
-        - name: Configure AWS credentials
-          uses: aws-actions/configure-aws-credentials@v4
-          with:
-            role-to-assume: arn:aws:iam::440423668970:role/GithubActionsRole
-            aws-region: us-east-1
-            audience: sts.amazonaws.com
   
         - name: Setup Terraform
           uses: hashicorp/setup-terraform@v3
@@ -65,8 +65,18 @@ jobs:
         - name: Checkout repository
           uses: actions/checkout@v3
 
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v4
+          with:
+            role-to-assume: arn:aws:iam::440423668970:role/GithubActionsRole
+            aws-region: us-east-1
+            audience: sts.amazonaws.com
+
         - name: Setup Terraform
           uses: hashicorp/setup-terraform@v3
+
+        - name: Terraform init
+          run: terraform init
 
         - name: Terraform plan
           run: terraform plan -lock-timeout=10m
@@ -82,19 +92,6 @@ jobs:
             restore-keys: |
               ${{ runner.os }}-terraform-
 
-        - name: Configure AWS credentials
-          uses: aws-actions/configure-aws-credentials@v4
-          with:
-            role-to-assume: arn:aws:iam::440423668970:role/GithubActionsRole
-            aws-region: us-east-1
-            audience: sts.amazonaws.com
-  
-        - name: Terraform init
-          run: terraform init
-  
-        - name: Terraform plan
-          run: terraform plan
-  
     terraform-apply:
       concurrency:  # 
         group: ${{ github.workflow }}-${{ github.ref }}
@@ -110,6 +107,13 @@ jobs:
         - name: Checkout repository
           uses: actions/checkout@v3
 
+        - name: Configure AWS credentials
+          uses: aws-actions/configure-aws-credentials@v4
+          with:
+            role-to-assume: arn:aws:iam::440423668970:role/GithubActionsRole
+            aws-region: us-east-1
+            audience: sts.amazonaws.com
+
         - name: Cache Terraform providers
           uses: actions/cache@v4
           with:
@@ -120,13 +124,6 @@ jobs:
             key: ${{ runner.os }}-terraform-${{ hashFiles('**/*.tf') }}
             restore-keys: |
               ${{ runner.os }}-terraform-
-
-        - name: Configure AWS credentials
-          uses: aws-actions/configure-aws-credentials@v4
-          with:
-            role-to-assume: arn:aws:iam::440423668970:role/GithubActionsRole
-            aws-region: us-east-1
-            audience: sts.amazonaws.com
   
         - name: Setup Terraform
           uses: hashicorp/setup-terraform@v3
