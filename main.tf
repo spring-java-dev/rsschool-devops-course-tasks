@@ -1,3 +1,7 @@
+terraform {
+  required_version = "= 1.5.7"
+}
+
 data "tls_certificate" "github" {
   url = "https://token.actions.githubusercontent.com"
 }
