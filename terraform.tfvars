@@ -1,0 +1,1 @@
+github_repo = "spring-java-dev/rsschool-devops-course-tasks"
